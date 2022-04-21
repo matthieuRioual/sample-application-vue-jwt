@@ -5,5 +5,7 @@
     "serviceId" : "maven-java"
   }, {
     "serviceId" : "frontend-maven-plugin"
+  }, {
+    "serviceId" : "springboot"
   } ]
 }
