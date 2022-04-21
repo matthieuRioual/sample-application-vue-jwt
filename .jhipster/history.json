@@ -17,5 +17,7 @@
     "serviceId" : "springboot-tomcat"
   }, {
     "serviceId" : "springboot-jwt-basic-auth"
+  }, {
+    "serviceId" : "springboot-jwt"
   } ]
 }
