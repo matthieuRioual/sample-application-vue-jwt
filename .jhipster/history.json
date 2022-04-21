@@ -21,5 +21,7 @@
     "serviceId" : "springboot-jwt"
   }, {
     "serviceId" : "github-actions"
+  }, {
+    "serviceId" : "vue-styled"
   } ]
 }
