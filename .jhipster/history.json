@@ -1,5 +1,7 @@
 {
   "values" : [ {
     "serviceId" : "init"
+  }, {
+    "serviceId" : "maven-java"
   } ]
 }
