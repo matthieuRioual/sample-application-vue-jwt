@@ -3,5 +3,7 @@
     "serviceId" : "init"
   }, {
     "serviceId" : "maven-java"
+  }, {
+    "serviceId" : "frontend-maven-plugin"
   } ]
 }
