@@ -11,5 +11,7 @@
     "serviceId" : "java-base"
   }, {
     "serviceId" : "vue"
+  }, {
+    "serviceId" : "vue-pinia"
   } ]
 }

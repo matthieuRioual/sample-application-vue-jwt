@@ -1,6 +1,7 @@
 {
   "name": "jhipster",
   "devDependencies": {
+    "@pinia/testing": "0.0.11",
     "vue-tsc": "0.34.7",
     "vue-jest": "5.0.0-alpha.10",
     "vite": "2.9.5",
@@ -38,6 +39,8 @@
     "prettier:format": "prettier --write \"{,src/**/}*.{md,json,yml,html,js,ts,tsx,css,scss,vue,java,xml}\""
   },
   "dependencies": {
+    "pinia-plugin-persist": "1.0.0",
+    "pinia": "2.0.13",
     "vue-router": "4.0.14",
     "vue": "3.2.33"
   },
