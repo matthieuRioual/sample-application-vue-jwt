@@ -13,5 +13,7 @@
     "serviceId" : "vue"
   }, {
     "serviceId" : "vue-pinia"
+  }, {
+    "serviceId" : "springboot-tomcat"
   } ]
 }
