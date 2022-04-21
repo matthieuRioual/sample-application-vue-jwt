@@ -19,5 +19,7 @@
     "serviceId" : "springboot-jwt-basic-auth"
   }, {
     "serviceId" : "springboot-jwt"
+  }, {
+    "serviceId" : "github-actions"
   } ]
 }
