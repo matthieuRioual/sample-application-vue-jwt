@@ -15,5 +15,7 @@
     "serviceId" : "vue-pinia"
   }, {
     "serviceId" : "springboot-tomcat"
+  }, {
+    "serviceId" : "springboot-jwt-basic-auth"
   } ]
 }
