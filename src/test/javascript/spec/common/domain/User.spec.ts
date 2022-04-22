@@ -6,7 +6,6 @@ describe('Initialization of User and UserCredentialDTO', () => {
     const testingUser = new User(
       'Matthieu',
       '1234567',
-      true,
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
     );
     expect(testingUser.username).toBe('Matthieu');
