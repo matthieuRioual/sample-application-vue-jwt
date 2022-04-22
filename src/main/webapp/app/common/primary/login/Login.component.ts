@@ -1,8 +1,19 @@
 export default {
-  name: 'Generator',
+  name: 'Login',
   data: () => {
     return {
-      appName: 'jhipster',
+      form: {
+        username: '',
+        password: '',
+      },
+    };
+  },
+  methods: () => {
+    return {
+      // @ts-ignore
+      onSubmit(e) {
+        e.preventDefault();
+      },
     };
   },
 };
