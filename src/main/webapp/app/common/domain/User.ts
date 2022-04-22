@@ -1,12 +1,10 @@
 export class User {
   username?: string;
   id?: string;
-  rememberMe?: boolean;
   token?: string;
-  constructor(username?: string, id?: string, rememberMe?: boolean, token?: string) {
+  constructor(username?: string, id?: string, token?: string) {
     this.username = username;
     this.id = id;
-    this.rememberMe = rememberMe;
     this.token = token;
   }
 }
