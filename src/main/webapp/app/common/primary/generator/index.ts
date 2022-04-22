@@ -1,4 +1,4 @@
-import AppComponent from './App.component';
-import AppVue from './App.vue';
+import GeneratorComponent from './Generator.component';
+import GeneratorVue from './Generator.vue';
 
-export { AppComponent, AppVue };
+export { GeneratorComponent, GeneratorVue };
