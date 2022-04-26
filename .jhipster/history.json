@@ -23,5 +23,7 @@
     "serviceId" : "github-actions"
   }, {
     "serviceId" : "vue-styled"
+  }, {
+    "serviceId" : "springdoc-openapi-with-security-jwt"
   } ]
 }
