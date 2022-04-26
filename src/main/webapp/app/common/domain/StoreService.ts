@@ -1,24 +1,23 @@
 import { defineStore } from 'pinia';
-import { User } from '@/common/domain/User';
 
-export const userLoggedInUserStore = defineStore({
+export const jwtStore = defineStore({
   id: 'UserStore',
   state: () => ({
-    user: new User(),
+    token: '',
     authenticateError: false,
   }),
 
   getters: {
     isAuth(state) {
-      return state.user.token != null;
+      return state.token != null;
     },
     getError(state) {
       return state.authenticateError;
     },
   },
   actions: {
-    setUser(user: User) {
-      this.user = user;
+    setToken(token: string) {
+      this.token = token;
     },
     setError(boolean: boolean) {
       this.authenticateError = boolean;
