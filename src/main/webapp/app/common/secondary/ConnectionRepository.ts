@@ -1,4 +1,4 @@
-import { User, UserCredentialsDTO } from '@/common/domain/User';
+import { UserCredentialsDTO } from '@/common/domain/User';
 import { AxiosHttp } from '@/http/AxiosHttp';
 import { ConnectionService } from '@/common/domain/ConnectionService';
 
