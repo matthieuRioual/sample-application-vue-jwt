@@ -1,16 +1,24 @@
-import { shallowMount, VueWrapper } from '@vue/test-utils';
+import { mount, VueWrapper } from '@vue/test-utils';
 import { AppVue } from '@/common/primary/app';
+import router from '@/router/router';
 
 let wrapper: VueWrapper;
 
-const wrap = () => {
-  wrapper = shallowMount(AppVue);
-};
-
 describe('App', () => {
-  it('should exist', () => {
+  beforeAll(async () => {
+    router.push('/');
+    await router.isReady();
+    const wrap = () => {
+      wrapper = mount(AppVue, {
+        global: {
+          plugins: [router],
+        },
+      });
+    };
     wrap();
+  });
 
+  it('should exist', () => {
     expect(wrapper.exists()).toBeTruthy();
   });
 });
