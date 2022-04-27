@@ -30,9 +30,14 @@ export default defineComponent({
         });
     };
 
+    const getError = (): boolean => {
+      return error;
+    };
+
     return {
       onSubmit,
       form,
+      getError,
     };
   },
 });
