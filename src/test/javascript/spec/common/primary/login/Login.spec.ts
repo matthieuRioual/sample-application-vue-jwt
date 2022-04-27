@@ -31,6 +31,8 @@ const fillFullForm = async (userCredentialDTO: UserCredentialsDTO): Promise<void
   await usernameInput.setValue(userCredentialDTO.username);
   const passwordInput = wrapper.find('#password');
   await passwordInput.setValue(userCredentialDTO.password);
+  const checkboxInput = wrapper.find('#remember');
+  if (userCredentialDTO.rememberMe) await checkboxInput.setValue(true);
 };
 
 describe('Login', () => {
@@ -45,7 +47,7 @@ describe('Login', () => {
     connectionService.login.resolves({});
     await wrap({ connectionService });
 
-    const userCredential: UserCredentialsDTO = new UserCredentialsDTO('username', 'password', true);
+    const userCredential: UserCredentialsDTO = new UserCredentialsDTO('admin', 'admin', true);
     await fillFullForm(userCredential);
 
     const submitButton = wrapper.find('#submit');
@@ -53,7 +55,10 @@ describe('Login', () => {
 
     const args = connectionService.login.getCall(0).args[0];
 
-    expect(args).toEqual({ username: 'username', password: 'password', rememberMe: false });
+    expect(args).toEqual({ username: 'admin', password: 'admin', rememberMe: true });
+
+    // @ts-ignore
+    expect(wrapper.vm.getError()).toBeFalsy();
   });
 
   it('should not login', async () => {
@@ -67,6 +72,7 @@ describe('Login', () => {
     const submitButton = wrapper.find('#submit');
     await submitButton.trigger('submit');
 
-    expect(true).toEqual(true);
+    // @ts-ignore
+    expect(wrapper.vm.getError()).toBeTruthy();
   });
 });
