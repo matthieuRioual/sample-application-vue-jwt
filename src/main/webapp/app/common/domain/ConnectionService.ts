@@ -1,5 +1,5 @@
-import { UserCredentialsDTO } from '@/common/domain/User';
+import { UserDTO } from '@/common/secondary/UserDTO';
 
 export interface ConnectionService {
-  login(userCredentialDTO: UserCredentialsDTO): Promise<string>;
+  login(userCredentialDTO: UserDTO): Promise<string>;
 }
