@@ -1,10 +1,5 @@
-export class UserCredentialsDTO {
+export interface User {
   username: string;
-  password: string;
-  rememberMe: boolean;
-  constructor(username: string, password: string, rememberMe: boolean) {
-    this.username = username;
-    this.password = password;
-    this.rememberMe = rememberMe;
-  }
+  role: string;
+  id?: string;
 }
