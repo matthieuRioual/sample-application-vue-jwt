@@ -1,5 +1,5 @@
 import { User } from '@/common/domain/User';
-import { UserDTO } from '@/common/secondary/UserDTO';
+import { Login } from '@/common/secondary/Login';
 
 import { AxiosHttp } from '@/http/AxiosHttp';
 import { AuthenticationService } from '@/common/domain/AuthenticationService';
@@ -9,7 +9,7 @@ export default class AuthenticationRepository implements AuthenticationService {
 
   async login(user: User, password: string): Promise<string> {
     return await this.axiosHttp
-      .post<any, UserDTO>('/api/authenticate', { username: user.username, password: password, rememberMe: user.rememberMe })
+      .post<any, Login>('/api/authenticate', { username: user.username, password: password, rememberMe: user.rememberMe })
       .then(result => {
         const bearerToken = result.headers.authorization;
         if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {

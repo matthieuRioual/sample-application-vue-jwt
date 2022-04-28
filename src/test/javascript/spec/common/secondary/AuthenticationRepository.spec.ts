@@ -1,4 +1,4 @@
-import { UserDTO } from '@/common/secondary/UserDTO';
+import { Login } from '@/common/secondary/Login';
 import { User } from '@/common/domain/User';
 import AuthenticationRepository from '@/common/secondary/AuthenticationRepository';
 import { stubAxiosHttp } from '../../http/AxiosHttpStub';
@@ -22,7 +22,7 @@ describe('AuthenticationRepository', () => {
 
     const [uri, payload] = axiosHttpStub.post.getCall(0).args;
     expect(uri).toBe('/api/authenticate');
-    expect(payload).toEqual<UserDTO>({ username: 'admin', password: 'admin', rememberMe: true });
+    expect(payload).toEqual<Login>({ username: 'admin', password: 'admin', rememberMe: true });
     expect(response).toEqual(AUTH_TOKEN);
   });
 
@@ -36,7 +36,7 @@ describe('AuthenticationRepository', () => {
 
     const [uri, payload] = axiosHttpStub.post.getCall(0).args;
     expect(uri).toBe('/api/authenticate');
-    expect(payload).toEqual<UserDTO>({ username: 'admin', password: 'password', rememberMe: true });
+    expect(payload).toEqual<Login>({ username: 'admin', password: 'password', rememberMe: true });
     expect(response).toStrictEqual('');
   });
 });
