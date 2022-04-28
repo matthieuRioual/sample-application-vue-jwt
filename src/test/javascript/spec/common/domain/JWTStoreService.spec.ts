@@ -11,14 +11,12 @@ describe('Test JWT store', () => {
     store = jwtStore();
   });
 
-  it('test set token', () => {
+  it('Should set token in store', () => {
     store.setToken(TOKEN);
-    expect(store.token).toStrictEqual(TOKEN
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
-    );
+    expect(store.token).toEqual(TOKEN);
   });
 
-  it('test isAuth function', () => {
+  it('Should tell user is loged in', () => {
     store.setToken(TOKEN);
     expect(store.isAuth).toBe(true);
   });
