@@ -1,37 +1,37 @@
 import { defineComponent, inject, ref } from 'vue';
-import { ConnectionService } from '@/common/domain/ConnectionService';
-import { UserCredentialsDTO } from '@/common/domain/User';
-import { jwtStore } from '@/common/domain/StoreService';
+import { AuthenticationService } from '@/common/domain/AuthenticationService';
+import { jwtStore } from '@/common/domain/JWTStoreService';
+import { Logger } from '@/common/domain/Logger';
+import { Login } from '@/common/domain/Login';
 
 export default defineComponent({
   name: 'Login',
   components: {},
   setup() {
-    const connectionService = inject('connectionService') as ConnectionService;
+    const authenticationService = inject('authenticationService') as AuthenticationService;
+    const logger = inject('logger') as Logger;
 
     const store = jwtStore();
 
-    const form = ref<UserCredentialsDTO>({
+    const form = ref<Login>({
       username: '',
       password: '',
       rememberMe: false,
     });
 
-    let error = false;
+    let loginError = false;
 
     const onSubmit = async (): Promise<void> => {
-      await connectionService
+      await authenticationService
         .login(form.value)
-        .then(id => {
+        .then((id: string) => {
           store.setToken(id);
         })
-        .catch(e => {
-          error = true;
-        });
+        .catch(error => logger.error('Wrong credentials have been provided', error));
     };
 
     const getError = (): boolean => {
-      return error;
+      return loginError;
     };
 
     return {

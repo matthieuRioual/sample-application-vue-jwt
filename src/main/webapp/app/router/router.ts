@@ -1,18 +1,20 @@
-import { AppVue } from '@/common/primary/app';
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, Router } from 'vue-router';
 import { LoginVue } from '@/common/primary/login';
-import { GeneratorVue } from '@/common/primary/generator';
+import { WelcomeVue } from '@/common/primary/welcome';
 
 const routes = [
   {
     path: '/',
     name: 'Root',
-    component: GeneratorVue,
+    component: WelcomeVue,
   },
   {
     path: '/app',
     name: 'App',
-    component: GeneratorVue,
+    component: WelcomeVue,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/login',
@@ -20,15 +22,32 @@ const routes = [
     component: LoginVue,
   },
   {
-    path: '/generator',
-    name: 'Generator',
-    component: GeneratorVue,
+    path: '/Welcome',
+    name: 'Welcome',
+    component: WelcomeVue,
+    meta: {
+      requiresAuth: true,
+    },
   },
 ];
 
-const router = createRouter({
+const routerOptions = {
   history: createWebHistory(),
   routes,
-});
+};
 
-export default router;
+export default (store: any): Router => {
+  const router = createRouter(routerOptions);
+  router.beforeEach((to, from, next: (...args: any[]) => void) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+      if (!store.isAuth) {
+        next({
+          path: '/login',
+        });
+        return;
+      }
+    }
+    next();
+  });
+  return router;
+};

@@ -1,38 +1,43 @@
 import { shallowMount, VueWrapper } from '@vue/test-utils';
 import { LoginVue } from '@/common/primary/login';
 import { createTestingPinia } from '@pinia/testing';
-import { ConnectionService } from '@/common/domain/ConnectionService';
-import { stubConnectionService } from '../../domain/ConnectionService.fixture';
-import { UserCredentialsDTO } from '@/common/domain/User';
+import { AuthenticationService } from '@/common/domain/AuthenticationService';
+import { stubAuthenticationService } from '../../domain/AuthenticationService.fixture';
+import { stubLogger } from '../../domain/Logger.fixture';
+import { Logger } from '@/common/domain/Logger';
+import { Login } from '@/common/domain/Login';
 
 let wrapper: VueWrapper;
 
 interface WrapperOptions {
-  connectionService: ConnectionService;
+  authenticationService: AuthenticationService;
+  logger: Logger;
 }
 
 const wrap = (wrapperOptions?: Partial<WrapperOptions>) => {
-  const { connectionService }: WrapperOptions = {
-    connectionService: stubConnectionService(),
+  const { authenticationService, logger }: WrapperOptions = {
+    authenticationService: stubAuthenticationService(),
+    logger: stubLogger(),
     ...wrapperOptions,
   };
   wrapper = shallowMount(LoginVue, {
     global: {
       provide: {
-        connectionService,
+        authenticationService,
+        logger,
       },
       plugins: [createTestingPinia()],
     },
   });
 };
 
-const fillFullForm = async (userCredentialDTO: UserCredentialsDTO): Promise<void> => {
+const fillFullForm = async (login: Login): Promise<void> => {
   const usernameInput = wrapper.find('#username');
-  await usernameInput.setValue(userCredentialDTO.username);
+  await usernameInput.setValue(login.username);
   const passwordInput = wrapper.find('#password');
-  await passwordInput.setValue(userCredentialDTO.password);
+  await passwordInput.setValue(login.password);
   const checkboxInput = wrapper.find('#remember');
-  if (userCredentialDTO.rememberMe) await checkboxInput.setValue(true);
+  if (login.rememberMe) await checkboxInput.setValue(true);
 };
 
 describe('Login', () => {
@@ -43,17 +48,17 @@ describe('Login', () => {
   });
 
   it('should login', async () => {
-    const connectionService = stubConnectionService();
-    connectionService.login.resolves({});
-    await wrap({ connectionService });
+    const authenticationService = stubAuthenticationService();
+    authenticationService.login.resolves({});
+    await wrap({ authenticationService });
 
-    const userCredential: UserCredentialsDTO = new UserCredentialsDTO('admin', 'admin', true);
-    await fillFullForm(userCredential);
+    const login: Login = { username: 'admin', password: 'admin', rememberMe: true };
+    await fillFullForm(login);
 
     const submitButton = wrapper.find('#submit');
     await submitButton.trigger('submit');
 
-    const args = connectionService.login.getCall(0).args[0];
+    const args = authenticationService.login.getCall(0).args[0];
 
     expect(args).toEqual({ username: 'admin', password: 'admin', rememberMe: true });
 
@@ -61,18 +66,19 @@ describe('Login', () => {
     expect(wrapper.vm.getError()).toBeFalsy();
   });
 
-  it('should not login', async () => {
-    const connectionService = stubConnectionService();
-    connectionService.login.rejects({});
-    await wrap({ connectionService });
+  it('Should log an error when login fails', async () => {
+    const authenticationService = stubAuthenticationService();
+    const logger = stubLogger();
+    authenticationService.login.rejects({});
+    await wrap({ authenticationService, logger });
 
-    const userCredential: UserCredentialsDTO = new UserCredentialsDTO('username', 'password', true);
-    await fillFullForm(userCredential);
+    const login: Login = { username: 'admin', password: 'wrong_password', rememberMe: true };
+    await fillFullForm(login);
 
     const submitButton = wrapper.find('#submit');
     await submitButton.trigger('submit');
 
-    // @ts-ignore
-    expect(wrapper.vm.getError()).toBeTruthy();
+    const [message] = logger.error.getCall(0).args;
+    expect(message).toBe('Wrong credentials have been provided');
   });
 });

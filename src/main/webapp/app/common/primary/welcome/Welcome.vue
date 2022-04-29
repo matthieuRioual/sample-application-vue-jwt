@@ -1,9 +1,9 @@
-<template src="./Generator.html"></template>
+<template src="./Welcome.html"></template>
 
-<script lang="ts" src="./Generator.component.ts"></script>
+<script lang="ts" src="./Welcome.component.ts"></script>
 
 <style>
-#generator {
+#welcome {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
