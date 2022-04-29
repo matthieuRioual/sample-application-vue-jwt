@@ -1,5 +1,5 @@
-import { Login } from '@/common/secondary/Login';
-import { User } from '@/common/domain/User';
+import { Login } from '@/common/domain/Login';
+import { LoginDTO } from '@/common/secondary/LoginDTO';
 import AuthenticationRepository from '@/common/secondary/AuthenticationRepository';
 import { stubAxiosHttp } from '../../http/AxiosHttpStub';
 
@@ -16,13 +16,13 @@ describe('AuthenticationRepository', () => {
       },
     });
     const authenticationRepository = new AuthenticationRepository(axiosHttpStub);
-    const user: User = { username: 'admin', rememberMe: true };
+    const login: Login = { username: 'admin', password: 'admin', rememberMe: true };
 
-    const response = await authenticationRepository.login(user, 'admin');
+    const response = await authenticationRepository.login(login);
 
     const [uri, payload] = axiosHttpStub.post.getCall(0).args;
     expect(uri).toBe('/api/authenticate');
-    expect(payload).toEqual<Login>({ username: 'admin', password: 'admin', rememberMe: true });
+    expect(payload).toEqual<LoginDTO>({ username: 'admin', password: 'admin', rememberMe: true });
     expect(response).toEqual(AUTH_TOKEN);
   });
 
@@ -30,13 +30,13 @@ describe('AuthenticationRepository', () => {
     const axiosHttpStub = stubAxiosHttp();
     axiosHttpStub.post.resolves({ status: 401, headers: { authorization: '' } });
     const authenticationRepository = new AuthenticationRepository(axiosHttpStub);
-    const user: User = { username: 'admin', rememberMe: true };
+    const login: Login = { username: 'admin', password: 'wrong_password', rememberMe: true };
 
-    const response = await authenticationRepository.login(user, 'password');
+    const response = await authenticationRepository.login(login);
 
     const [uri, payload] = axiosHttpStub.post.getCall(0).args;
     expect(uri).toBe('/api/authenticate');
-    expect(payload).toEqual<Login>({ username: 'admin', password: 'password', rememberMe: true });
+    expect(payload).toEqual<LoginDTO>({ username: 'admin', password: 'wrong_password', rememberMe: true });
     expect(response).toStrictEqual('');
   });
 });
