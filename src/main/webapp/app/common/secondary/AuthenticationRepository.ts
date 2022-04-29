@@ -1,5 +1,5 @@
-import { User } from '@/common/domain/User';
-import { Login } from '@/common/secondary/Login';
+import { Login } from '@/common/domain/Login';
+import { LoginDTO, toLoginDTO } from '@/common/secondary/LoginDTO';
 
 import { AxiosHttp } from '@/http/AxiosHttp';
 import { AuthenticationService } from '@/common/domain/AuthenticationService';
@@ -7,17 +7,20 @@ import { AuthenticationService } from '@/common/domain/AuthenticationService';
 export default class AuthenticationRepository implements AuthenticationService {
   constructor(private axiosHttp: AxiosHttp) {}
 
-  async login(user: User, password: string): Promise<string> {
+  async login(login: Login): Promise<string> {
+    const loginDTO: LoginDTO = toLoginDTO(login);
     return await this.axiosHttp
-      .post<any, Login>('/api/authenticate', { username: user.username, password: password, rememberMe: user.rememberMe })
-      .then(result => {
-        const bearerToken = result.headers.authorization;
-        if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {
-          const jwt = bearerToken.slice(7, bearerToken.length);
-          return jwt;
-        } else {
-          return '';
-        }
-      });
+      .post<any, LoginDTO>('/api/authenticate', loginDTO)
+      .then(response => this.parseAuthorisationHeaders(response));
+  }
+
+  parseAuthorisationHeaders(response: any): string {
+    const bearerToken = response.headers.authorization;
+    if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {
+      const jwt = bearerToken.slice(7, bearerToken.length);
+      return jwt;
+    } else {
+      return '';
+    }
   }
 }

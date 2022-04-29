@@ -1,5 +1,5 @@
-import { User } from '@/common/domain/User';
+import { Login } from '@/common/domain/Login';
 
 export interface AuthenticationService {
-  login(user: User, password: string): Promise<string>;
+  login(login: Login): Promise<string>;
 }
