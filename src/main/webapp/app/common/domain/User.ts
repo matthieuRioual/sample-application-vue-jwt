@@ -1,6 +1,6 @@
 export interface User {
-  username: string;
-  rememberMe: boolean;
+  name?: string;
+  lastname?: boolean;
   role?: string;
   id?: string;
 }
