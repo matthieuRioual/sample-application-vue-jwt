@@ -1,16 +1,12 @@
 import { createRouter, createWebHistory, Router } from 'vue-router';
 import { LoginVue } from '@/common/primary/login';
 import { WelcomeVue } from '@/common/primary/welcome';
+import { jwtStore } from '@/common/domain/JWTStoreService';
 
 const routes = [
   {
     path: '/',
     name: 'Root',
-    component: WelcomeVue,
-  },
-  {
-    path: '/app',
-    name: 'App',
     component: WelcomeVue,
     meta: {
       requiresAuth: true,
@@ -22,7 +18,7 @@ const routes = [
     component: LoginVue,
   },
   {
-    path: '/Welcome',
+    path: '/welcome',
     name: 'Welcome',
     component: WelcomeVue,
     meta: {
@@ -36,9 +32,10 @@ const routerOptions = {
   routes,
 };
 
-export default (store: any): Router => {
+export default (): Router => {
   const router = createRouter(routerOptions);
   router.beforeEach((to, from, next: (...args: any[]) => void) => {
+    const store = jwtStore();
     if (to.matched.some(record => record.meta.requiresAuth)) {
       if (!store.isAuth) {
         next({

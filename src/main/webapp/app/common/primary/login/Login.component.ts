@@ -27,7 +27,10 @@ export default defineComponent({
         .then((id: string) => {
           store.setToken(id);
         })
-        .catch(error => logger.error('Wrong credentials have been provided', error));
+        .catch(error => {
+          loginError = true;
+          logger.error('Wrong credentials have been provided', error);
+        });
     };
 
     const getError = (): boolean => {
