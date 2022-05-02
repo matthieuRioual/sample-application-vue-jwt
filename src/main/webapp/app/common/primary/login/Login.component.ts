@@ -3,6 +3,7 @@ import { AuthenticationService } from '@/common/domain/AuthenticationService';
 import { jwtStore } from '@/common/domain/JWTStoreService';
 import { Logger } from '@/common/domain/Logger';
 import { Login } from '@/common/domain/Login';
+import { Router } from 'vue-router';
 
 export default defineComponent({
   name: 'Login',
@@ -10,6 +11,7 @@ export default defineComponent({
   setup() {
     const authenticationService = inject('authenticationService') as AuthenticationService;
     const logger = inject('logger') as Logger;
+    const router = inject('router') as Router;
 
     const store = jwtStore();
 
@@ -26,6 +28,7 @@ export default defineComponent({
         .login(form.value)
         .then((id: string) => {
           store.setToken(id);
+          router.push('/');
         })
         .catch(error => {
           loginError = true;

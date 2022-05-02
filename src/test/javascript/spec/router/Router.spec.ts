@@ -1,7 +1,6 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import { AppVue } from '@/common/primary/app';
 import { WelcomeVue } from '@/common/primary/welcome';
-import { LoginVue } from '@/common/primary/login';
 import createRouter from '@/router/router';
 import { createTestingPinia } from '@pinia/testing';
 
@@ -46,13 +45,5 @@ describe('Router', () => {
     await wrapper.vm.$nextTick();
 
     expect(wrapper.findComponent(WelcomeVue)).toBeTruthy();
-  });
-
-  it('Should go to LoginVue', async () => {
-    router.push('/login');
-
-    await wrapper.vm.$nextTick();
-
-    expect(wrapper.findComponent(LoginVue)).toBeTruthy();
   });
 });

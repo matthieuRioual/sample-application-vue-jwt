@@ -6,8 +6,11 @@ import { stubAuthenticationService } from '../../domain/AuthenticationService.fi
 import { stubLogger } from '../../domain/Logger.fixture';
 import { Logger } from '@/common/domain/Logger';
 import { Login } from '@/common/domain/Login';
+import sinon from 'sinon';
 
 let wrapper: VueWrapper;
+const $route = { path: {} };
+const router = { push: sinon.stub() };
 
 interface WrapperOptions {
   authenticationService: AuthenticationService;
@@ -20,11 +23,13 @@ const wrap = (wrapperOptions?: Partial<WrapperOptions>) => {
     logger: stubLogger(),
     ...wrapperOptions,
   };
+
   wrapper = shallowMount(LoginVue, {
     global: {
       provide: {
         authenticationService,
         logger,
+        router,
       },
       plugins: [createTestingPinia()],
     },

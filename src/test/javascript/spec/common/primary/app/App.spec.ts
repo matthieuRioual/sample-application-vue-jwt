@@ -6,9 +6,6 @@ let wrapper: VueWrapper;
 const $route = { path: {} };
 const $router = { push: sinon.stub() };
 
-const isNotEmptyStub = (override: any): boolean => {
-  return override.stubs && override.stubs.length > 1;
-};
 const wrap = (override: any = {}) => {
   const mocks: any = override.mocks || {};
 
