@@ -16,4 +16,13 @@ export const jwtStore = defineStore({
       this.token = token;
     },
   },
+  persist: {
+    enabled: true,
+    strategies: [
+      {
+        key: 'user',
+        storage: localStorage,
+      },
+    ],
+  },
 });
