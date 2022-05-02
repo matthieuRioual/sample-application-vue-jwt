@@ -26,7 +26,7 @@ describe('AuthenticationRepository', () => {
     expect(response).toEqual(AUTH_TOKEN);
   });
 
-  it('Should not login when status 401 returned', async () => {
+  it('Should set empty token', async () => {
     const axiosHttpStub = stubAxiosHttp();
     axiosHttpStub.post.resolves({ status: 401, headers: { authorization: '' } });
     const authenticationRepository = new AuthenticationRepository(axiosHttpStub);
@@ -37,6 +37,6 @@ describe('AuthenticationRepository', () => {
     const [uri, payload] = axiosHttpStub.post.getCall(0).args;
     expect(uri).toBe('/api/authenticate');
     expect(payload).toEqual<LoginDTO>({ username: 'admin', password: 'wrong_password', rememberMe: true });
-    expect(response).toStrictEqual('');
+    expect(response).toEqual('');
   });
 });
