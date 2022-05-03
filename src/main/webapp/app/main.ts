@@ -3,6 +3,7 @@ import App from './common/primary/app/App.vue';
 import router from './router/router';
 import { createPinia } from 'pinia';
 import piniaPersist from 'pinia-plugin-persist';
+
 // jhipster-needle-main-ts-import
 
 const app = createApp(App);
