@@ -30,13 +30,9 @@ export default defineComponent({
         });
     };
 
-    const getUser = (): User => {
-      return user.value;
-    };
-
     return {
       onClick,
-      getUser,
+      user,
     };
   },
 });
