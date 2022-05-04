@@ -1,5 +1,6 @@
 import { Login } from '@/common/domain/Login';
 import { LoginDTO } from '@/common/secondary/LoginDTO';
+import { User } from '@/common/domain/User';
 import AuthenticationRepository from '@/common/secondary/AuthenticationRepository';
 import { stubAxiosHttp } from '../../http/AxiosHttpStub';
 
@@ -38,5 +39,17 @@ describe('AuthenticationRepository', () => {
     expect(uri).toBe('/api/authenticate');
     expect(payload).toEqual<LoginDTO>({ username: 'admin', password: 'wrong_password', rememberMe: true });
     expect(response).toEqual('');
+  });
+
+  it('Should authenticate', async () => {
+    const axiosHttpStub = stubAxiosHttp();
+    axiosHttpStub.get.resolves({ data: { login: 'username', authorities: ['admin'] } });
+    const authenticationRepository = new AuthenticationRepository(axiosHttpStub);
+
+    const response = await authenticationRepository.authenticate('fake_token');
+
+    const [uri, payload] = axiosHttpStub.get.getCall(0).args;
+    expect(uri).toBe('/api/account');
+    expect(response).toStrictEqual<User>({ username: 'username', authorities: ['admin'] });
   });
 });
