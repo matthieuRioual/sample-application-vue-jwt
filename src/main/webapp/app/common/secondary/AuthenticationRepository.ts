@@ -5,22 +5,28 @@ import { AxiosHttp } from '@/http/AxiosHttp';
 import { AuthenticationService } from '@/common/domain/AuthenticationService';
 import { User } from '../domain/User';
 import { toUser, UserDTO } from './UserDTO';
+import { Pinia } from 'pinia';
+import { jwtStore } from '@/common/domain/JWTStoreService';
 
 export default class AuthenticationRepository implements AuthenticationService {
-  constructor(private axiosHttp: AxiosHttp) {}
+  constructor(private axiosHttp: AxiosHttp, private piniaInstance: Pinia) {}
 
-  async authenticate(token: string): Promise<User> {
+  async authenticate(): Promise<User> {
     return await this.axiosHttp
-      .get<UserDTO>('/api/account', { headers: { Authorization: 'Bearer ' + token } })
+      .get<UserDTO>('/api/account', { headers: { Authorization: 'Bearer ' + this.getJwtToken() } })
       .then(response => toUser(response.data));
   }
 
-  async login(login: Login): Promise<string> {
+  async login(login: Login): Promise<void> {
     const loginDTO: LoginDTO = toLoginDTO(login);
-    return await this.axiosHttp
+    await this.axiosHttp
       .post<any, LoginDTO>('/api/authenticate', loginDTO)
-      .then(response => this.parseAuthorisationHeaders(response));
+      .then(response => this.saveJwtTokenIntoStore(this.parseAuthorisationHeaders(response)));
   }
+
+  private saveJwtTokenIntoStore = (token: string): void => jwtStore(this.piniaInstance).setToken(token);
+
+  private getJwtToken = (): string => jwtStore(this.piniaInstance).token;
 
   parseAuthorisationHeaders(response: any): string {
     const bearerToken = response.headers.authorization;

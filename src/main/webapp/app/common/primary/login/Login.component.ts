@@ -1,6 +1,5 @@
 import { defineComponent, inject, ref } from 'vue';
 import { AuthenticationService } from '@/common/domain/AuthenticationService';
-import { jwtStore } from '@/common/domain/JWTStoreService';
 import { Logger } from '@/common/domain/Logger';
 import { Login } from '@/common/domain/Login';
 import { Router } from 'vue-router';
@@ -13,8 +12,6 @@ export default defineComponent({
     const logger = inject('logger') as Logger;
     const router = inject('router') as Router;
 
-    const store = jwtStore();
-
     const form = ref<Login>({
       username: '',
       password: '',
@@ -26,8 +23,7 @@ export default defineComponent({
     const onSubmit = async (): Promise<void> => {
       await authenticationService
         .login(form.value)
-        .then((id: string) => {
-          store.setToken(id);
+        .then(() => {
           router.push('/');
         })
         .catch(error => {
