@@ -11,14 +11,16 @@ import piniaPersist from 'pinia-plugin-persist';
 // jhipster-needle-main-ts-import
 
 const axiosHttp = new AxiosHttp(axios.create({ baseURL: '' }));
-const authenticationRepository = new AuthenticationRepository(axiosHttp);
 const consoleLogger = new ConsoleLogger(console);
-
 const app = createApp(App);
+
 const pinia = createPinia();
 pinia.use(piniaPersist);
 app.use(pinia);
 const router = createRouter();
+
+const authenticationRepository = new AuthenticationRepository(axiosHttp, pinia);
+
 app.provide('authenticationService', authenticationRepository);
 app.provide('logger', consoleLogger);
 app.provide('router', router);
